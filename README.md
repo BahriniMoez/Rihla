@@ -30,8 +30,27 @@ Par contre, Colors.teal est une couleur statique codée en dur : elle restera to
 
 
 Palier 3: Questions de compréhension
-Q1: l'image devient plus clair et on ne vois plus le dégradé car l'image est placée par-dessus, alors il est masqué complétement. car le premier élement est au fond et le dernier s'affiche au premier.
+Q4: l'image devient plus clair et on ne vois plus le dégradé car l'image est placée par-dessus, alors il est masqué complétement. car le premier élement est au fond et le dernier s'affiche au premier.
 
-Q2: la banniere perd ses coins arrondis et l'image rectangulaire dépasse les angles du conteneur.
+Q5: la banniere perd ses coins arrondis et l'image rectangulaire dépasse les angles du conteneur.
 
-Q3: le Positioned des textes a right: 130 pour laisser une espace pour le bouton, car avec right: 130 on bloque le largeur du texte un peu avant la fin pour éviter que le text se superpose au button.
+Q6: le Positioned des textes a right: 130 pour laisser une espace pour le bouton, car avec right: 130 on bloque le largeur du texte un peu avant la fin pour éviter que le text se superpose au button.
+
+Palier 4: Questions de compréhension
+Q7: le spacer a besoin d'une limite claire pour savoir quel espace prendre. Sans Expanded, la column a une largeur infinie et le Spacer est perdu. l'expanded lui sert de cadre précis.
+
+Q8: Pour une 7eme destination on ne dois pas ajouter des lignes de code, en ajoute simplement les données de la destination dans le fichier destinations.dart, la boucle affiche s'adapte et affiche tout les données.
+exemple : (
+    Destination(
+    nom: 'Bizerte',
+    region: 'Bizerte',
+    categorie: 'Plage',
+    image: 'assets/images/Bizerte.png',
+    note: 5,
+    prix: 360,
+    duree: '2 jours',
+    description:
+        'Médina fortifiée au bord de la mer, jardins de jasmin et longues '
+        'plages : la station balnéaire historique du Cap Blanc.',
+  ),
+)
