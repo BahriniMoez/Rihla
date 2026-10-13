@@ -27,3 +27,11 @@ Q2: le prenom est final car un StatelessWidget doivent initialisées toutes ses 
 Q3: cs.primary est dynamique, il s'adapte automatiquement et génère la couleur principale en fonction de la seedColor définie dans le thème de l'application. 
 Si on change la seedColor, cs.primary changera de couleur. 
 Par contre, Colors.teal est une couleur statique codée en dur : elle restera toujours teal, peu importe les modifications apportées au thème global.
+
+
+Palier 3: Questions de compréhension
+Q1: l'image devient plus clair et on ne vois plus le dégradé car l'image est placée par-dessus, alors il est masqué complétement. car le premier élement est au fond et le dernier s'affiche au premier.
+
+Q2: la banniere perd ses coins arrondis et l'image rectangulaire dépasse les angles du conteneur.
+
+Q3: le Positioned des textes a right: 130 pour laisser une espace pour le bouton, car avec right: 130 on bloque le largeur du texte un peu avant la fin pour éviter que le text se superpose au button.
