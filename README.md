@@ -54,3 +54,13 @@ exemple : (
         'plages : la station balnéaire historique du Cap Blanc.',
   ),
 )
+
+
+
+Palier 5: Questions de compréhension
+Q9: En mémoire la variable _categorie change bien et enregistre la nouvelle catégorie sur laquelle j'ai cliquée.
+par contre à l'écran Rien ne change du tout, la liste ne se filtre pas car sans setState, Flutter ne sait pas qu'il doit redessiner l'écran pour montrer la modification
+
+Q10: _filtrees a un getter recalculé à chaque build(), parce que la liste des destinations doit changer à chaque fois que je clique sur une nouvelle catégorie. Getter vérifie automatiquement la catégorie active à chaque actualisation de l'écran.
+
+Q11: Parce que le HeroBanner n'a pas besoin de retenir des informations ou de changer tout seul. Il affiche ce qu'on lui donne (image et titre), alors que HomeScreen qui gére le changement d'état et lui transmet les données.
