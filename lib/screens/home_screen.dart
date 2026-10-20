@@ -69,7 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 12),
           
 
-            for (final d in _filtrees) DestinationCard(destination: d),
+            //Si on n'utilise pas key: ValueKey(d.nom), le bouton favori reste bloqué sur la même position (index) après un filtre.
+            //Avec ValueKey(d.nom), le cœur suit correctement sa destination, même si l'ordre change .
+            for (final d in _filtrees) DestinationCard(key: ValueKey(d.nom),destination: d),
           ],
         ),
       ),
