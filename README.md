@@ -64,3 +64,13 @@ par contre à l'écran Rien ne change du tout, la liste ne se filtre pas car san
 Q10: _filtrees a un getter recalculé à chaque build(), parce que la liste des destinations doit changer à chaque fois que je clique sur une nouvelle catégorie. Getter vérifie automatiquement la catégorie active à chaque actualisation de l'écran.
 
 Q11: Parce que le HeroBanner n'a pas besoin de retenir des informations ou de changer tout seul. Il affiche ce qu'on lui donne (image et titre), alors que HomeScreen qui gére le changement d'état et lui transmet les données.
+
+
+
+TP4 Question de Comprehension :
+Palier 2 :
+Q1 : je fais le test et oui, le filtre est conservé. Chaque fois on utilise la fonction pour passer au detail_screen (Push) notre ecran d'acceuil (home_screen) est simplement masqué et placé en dessous du nouvel écran dans la pile de navigation, il n'est pas détruit. Lorsque en utilise Navigator.pop pour revenir en arriere on dépile le Detail_screen et on retrouve l'état exact de home_screen tel qu'il était.
+
+Q2 : Le DetailScreen recoit la destination par son constructeur paramétré (required this.destination), on utilise le mécanisme de transmission d'objets par paraméte (le Constucteur typé) du TP3
+
+Q3 : lorsque je retire le clipBehavior (clipBehavior: Clip.antiAlias), il dépasse les coins arrondis de la carte lors du clic, qui crée des carrés aux coins de la carte au lieu de respecter l'arrondi de 20px 

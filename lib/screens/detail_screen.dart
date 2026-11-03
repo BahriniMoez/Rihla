@@ -43,8 +43,9 @@ class _DetailScreenState extends State<DetailScreen> {
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
                     child: IconButton(
+                      tooltip: 'Retour',
                       icon: const Icon(Icons.arrow_back, color: Colors.black),
-                      onPressed: () {
+                      onPressed: () { 
                         if (Navigator.canPop(context)) {
                           Navigator.pop(context);
                         }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/destination.dart';
 import 'favorite_button.dart';
+import '../screens/detail_screen.dart';
 
 class DestinationCard extends StatelessWidget {
   final Destination destination;
@@ -13,12 +14,20 @@ class DestinationCard extends StatelessWidget {
     final cs = theme.colorScheme;
 
     return Card(
+      margin: const EdgeInsets.only(bottom: 12),
       elevation: 0,
       color: cs.surfaceContainerLow,
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      clipBehavior: Clip.antiAlias, // L'effet d'encre suit les coins arrondis
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailScreen(destination: destination),
+            ),
+          );
+        },
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
@@ -95,6 +104,7 @@ class DestinationCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }
