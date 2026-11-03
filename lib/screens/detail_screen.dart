@@ -36,12 +36,9 @@ class _DetailScreenState extends State<DetailScreen> {
         icon: const Icon(Icons.check_circle, color: Colors.green, size: 48),
         title: const Text('Réservation confirmée'),
         content: Text(
-          'Merci ${reservation.nom} !\n\n'
-          'Destination : ${reservation.destination.nom}\n'
-          'Voyageurs : ${reservation.voyageurs}\n'
-          'Formule : ${reservation.formule}\n'
+          '${reservation.nom}, Votre séjour à ${reservation.destination.nom} est réservé pour ${reservation.voyageurs} voyageur(s), formule ${reservation.formule} \n\n'
           'Total : ${reservation.total} DT\n\n'
-          'Un e-mail de confirmation a été envoyé à ${reservation.email}.',
+          'Un e-mail de confirmation sera envoyé à ${reservation.email}.',
         ),
         actions: [
           FilledButton(
@@ -68,12 +65,15 @@ class _DetailScreenState extends State<DetailScreen> {
           children: [
             Stack(
               children: [
-                SizedBox(
-                  height: 340,
-                  width: double.infinity,
-                  child: Image.asset(
-                    destination.image,
-                    fit: BoxFit.cover,
+                Hero(
+                  tag: 'image-${destination.nom}',
+                  child: SizedBox(
+                    height: 340,
+                    width: double.infinity,
+                    child: Image.asset(
+                      destination.image,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Positioned(

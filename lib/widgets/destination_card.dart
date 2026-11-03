@@ -18,7 +18,7 @@ class DestinationCard extends StatelessWidget {
       elevation: 0,
       color: cs.surfaceContainerLow,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      clipBehavior: Clip.antiAlias, // L'effet d'encre suit les coins arrondis
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -32,13 +32,16 @@ class DestinationCard extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: Image.asset(
-                destination.image,
-                width: 88,
-                height: 88,
-                fit: BoxFit.cover,
+            Hero(
+                tag: 'image-${destination.nom}',
+                child:ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Image.asset(
+                  destination.image,
+                  width: 88,
+                  height: 88,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(width: 14),
