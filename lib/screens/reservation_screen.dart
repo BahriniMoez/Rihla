@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // pour inputFormatters
+import 'package:flutter/services.dart'; 
 
 import '../models/destination.dart';
-import '../models/reservation.dart';
+//import '../models/reservation.dart';
 
 class ReservationScreen extends StatefulWidget {
   final Destination destination;
@@ -23,13 +23,46 @@ class _ReservationScreenState extends State<ReservationScreen> {
   final _nomCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _telCtrl = TextEditingController();
+  final _dateCtrl = TextEditingController();
 
+  DateTime? _date; 
+  String _formule = 'Essentiel';
+  bool _conditions = false;
+  AutovalidateMode _autoValidation = AutovalidateMode.disabled;
+
+  int get _prixParPersonne => _formule == 'Confort'
+      ? (widget.destination.prix * 1.3).round()
+      : widget.destination.prix;
+
+  int get _total => _prixParPersonne * widget.voyageurs;
   @override
   void dispose() {
     _nomCtrl.dispose();
     _emailCtrl.dispose();
     _telCtrl.dispose();
+    _dateCtrl.dispose();
     super.dispose();
+  }
+
+  Future<void> _choisirDate() async {
+    final demain = DateTime.now().add(const Duration(days: 1));
+    final choisie = await showDatePicker(
+      context: context,
+      initialDate: _date ?? demain,
+      firstDate: demain,
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+      helpText: 'Date de départ',
+    );
+    
+    if (choisie == null) return;
+
+    setState(() {
+      _date = choisie;
+      final jour = choisie.day.toString().padLeft(2, '0');
+      final mois = choisie.month.toString().padLeft(2, '0');
+      final annee = choisie.year.toString();
+      _dateCtrl.text = '$jour/$mois/$annee';
+    });
   }
 
   InputDecoration _deco(String label, IconData icone, {String? aide}) {
@@ -70,7 +103,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
   }
 
   void _valider() {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()){
+      setState(() {
+        _autoValidation = AutovalidateMode.onUserInteraction;
+      });
+      return;
+    }
     // Provisoire : sera remplacé au palier 5
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Formulaire valide')),
@@ -81,12 +119,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    final total = widget.destination.prix * widget.voyageurs;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Réserver')),
       body: Form(
         key: _formKey,
+        autovalidateMode: _autoValidation,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -181,6 +219,56 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 ],
                 validator: _validerTel,
               ),
+
+              const SizedBox(height: 24),
+              Text(
+                'Votre voyage',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              TextFormField(
+                controller: _dateCtrl,
+                readOnly: true,
+                onTap: _choisirDate,
+                decoration: _deco('Date de départ', Icons.calendar_month_outlined),
+                validator: (_) => _date == null ? 'Choisissez une date' : null,
+              ),
+
+              const SizedBox(height: 16),
+
+              SegmentedButton<String>(
+                segments: const [
+                  ButtonSegment(
+                    value: 'Essentiel',
+                    label: Text('Essentiel'),
+                    icon: Icon(Icons.backpack_outlined),
+                  ),
+                  ButtonSegment(
+                    value: 'Confort',
+                    label: Text('Confort +30 %'),
+                    icon: Icon(Icons.hotel_outlined),
+                  ),
+                ],
+                selected: {_formule},
+                onSelectionChanged: (choix) {
+                  setState(() {
+                    _formule = choix.first;
+                  });
+                },
+              ),
+              
+              const SizedBox(height: 12),
+              CheckboxListTile(
+                value: _conditions,
+                onChanged: (v) => setState(() => _conditions = v ?? false),
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+                title: const Text("J'accepte les conditions d'annulation"),
+                subtitle: const Text("Annulation gratuite jusqu'à 48 h avant"),
+              ),
             ],
           ),
         ),
@@ -205,13 +293,13 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${widget.destination.prix} DT × ${widget.voyageurs}',
+                    '$_prixParPersonne DT × ${widget.voyageurs}',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: cs.onSurfaceVariant,
                     ),
                   ),
                   Text(
-                    '$total DT',
+                    '$_total DT',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: cs.primary,
@@ -222,7 +310,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
               const SizedBox(width: 24),
               Expanded(
                 child: FilledButton.icon(
-                  onPressed: _valider,
+                  onPressed: _conditions ? _valider : null,
                   icon: const Icon(Icons.check),
                   label: const Text('Confirmer'),
                   style: FilledButton.styleFrom(

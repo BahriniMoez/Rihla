@@ -81,3 +81,8 @@ Q1 : _formKey.currentState!.validate() , parcourt l'ensemble des champs du formu
 Q2 : inputFormatters agit en temps réel agit en intervenir préventivement et en temps réel pendant la frappe, ainsi que validator agit au moment de la soumission (_valider()) pour vérifier si la valeur finale respecte les règles métier
 
 Q3 : il faut appeler dispose() sur les controleurs pour libérer les ressources système et éviter les fuites de mémoire lorsque l'ecran est détruit de la pile de navigation
+
+Palier 4 Question de comprehension:
+Q1 : Le champ date est en readOnly pour empêcher l'utilisateur d'ouvrir le clavier virtuel et de taper une date manuellement ce qui risquerait d'introduire des formats invalides ou des fautes de frappe. Sans cela, l'utilisateur pourrait écrire n'importe quoi et casser la logique de validation de la date.
+
+Q2 : Parce qu'à chaque fois que setState() est appelé lorsque l'utilisateur change de formule dans le SegmentedButton, Flutter reconstruit l'interface graphique (build). Comme _total est un getter calculé à la volée à partir de _formule et _prixParPersonne, il est réévalué automatiquement à chaque affichage sans nécessiter de variable d'état supplémentaire ni de calcul manuel.
