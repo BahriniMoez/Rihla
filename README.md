@@ -74,3 +74,10 @@ Q1 : je fais le test et oui, le filtre est conservé. Chaque fois on utilise la 
 Q2 : Le DetailScreen recoit la destination par son constructeur paramétré (required this.destination), on utilise le mécanisme de transmission d'objets par paraméte (le Constucteur typé) du TP3
 
 Q3 : lorsque je retire le clipBehavior (clipBehavior: Clip.antiAlias), il dépasse les coins arrondis de la carte lors du clic, qui crée des carrés aux coins de la carte au lieu de respecter l'arrondi de 20px 
+
+Palier 3 :
+Q1 : _formKey.currentState!.validate() , parcourt l'ensemble des champs du formulaire rattachés à cette clé et exécute leur fonction validaator. Elle renvoie true si tous les validateurs retournent null (succés), ou false dès qu'au moins un validateur retourne un message d'erreur.
+
+Q2 : inputFormatters agit en temps réel agit en intervenir préventivement et en temps réel pendant la frappe, ainsi que validator agit au moment de la soumission (_valider()) pour vérifier si la valeur finale respecte les règles métier
+
+Q3 : il faut appeler dispose() sur les controleurs pour libérer les ressources système et éviter les fuites de mémoire lorsque l'ecran est détruit de la pile de navigation
