@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; 
 
 import '../models/destination.dart';
-//import '../models/reservation.dart';
+import '../models/reservation.dart';
 
 class ReservationScreen extends StatefulWidget {
   final Destination destination;
@@ -109,10 +109,18 @@ class _ReservationScreenState extends State<ReservationScreen> {
       });
       return;
     }
-    // Provisoire : sera remplacé au palier 5
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Formulaire valide')),
+    
+    final reservation = Reservation(
+      destination: widget.destination,
+      nom: _nomCtrl.text.trim(),
+      email: _emailCtrl.text.trim(),
+      telephone: _telCtrl.text.trim(),
+      dateDepart: _date!,
+      voyageurs: widget.voyageurs,
+      formule: _formule,
     );
+    
+    Navigator.pop(context, reservation);
   }
 
   @override

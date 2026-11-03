@@ -86,3 +86,11 @@ Palier 4 Question de comprehension:
 Q1 : Le champ date est en readOnly pour empêcher l'utilisateur d'ouvrir le clavier virtuel et de taper une date manuellement ce qui risquerait d'introduire des formats invalides ou des fautes de frappe. Sans cela, l'utilisateur pourrait écrire n'importe quoi et casser la logique de validation de la date.
 
 Q2 : Parce qu'à chaque fois que setState() est appelé lorsque l'utilisateur change de formule dans le SegmentedButton, Flutter reconstruit l'interface graphique (build). Comme _total est un getter calculé à la volée à partir de _formule et _prixParPersonne, il est réévalué automatiquement à chaque affichage sans nécessiter de variable d'état supplémentaire ni de calcul manuel.
+
+
+Palier 5 Question de comprehension:
+Q1 : reservation vaut null, car aucun objet n'a été passé en paramètre à Navigator.pop(context) lors de la fermeture par la flèche de l'AppBar.
+
+Q2: VS Code affiche un avertissement de type « Use of 'BuildContext' across asynchronous gaps ». Cela signifie qu'utiliser le context après un délai asynchrone (await) sans vérifier si le widget est toujours monté (mounted) peut provoquer des bugs ou des crashes si l'utilisateur a quitté l'écran entre-temps.
+
+Q3 : nous apprend qu'une boîte de dialogue (AlertDialog) est gérée par Flutter comme un écran superposé géré à l'intérieur de la pile de navigation. Elle s'ouvre via un système de route et se ferme en la dépilant avec Navigator.pop.
