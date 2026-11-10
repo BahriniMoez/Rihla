@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../data/destinations.dart';
+import '../data/destinations.dart'; 
 import '../models/destination.dart';
+import '../services/api_service.dart'; 
 import '../widgets/destination_card.dart';
 import '../widgets/hero_banner.dart';
 import '../widgets/home_header.dart';
@@ -18,23 +19,72 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String _categorie = 'Tout';
   int _onglet = 0; 
+  late Future<List<Destination>> _futurDestinations;
 
-  List<Destination> get _filtrees {
-    if (_categorie == 'Tout') {
-      return destinations;
-    }
-    return destinations.where((d) => d.categorie == _categorie).toList();
+  @override
+  void initState() {
+    super.initState();
+    _futurDestinations = ApiService.getDestinations();
   }
 
-  Widget _construireAccueil() {
+  Future<void> _recharger() async {
+    final futur = ApiService.getDestinations();
+    setState(() {
+      _futurDestinations = futur;
+    });
+    try {
+      await futur;
+    } catch (_) {}
+  }
+
+  List<Destination> _filtrer(List<Destination> toutes) {
+    if (_categorie == 'Tout') {
+      return toutes;
+    }
+    return toutes.where((d) => d.categorie == _categorie).toList();
+  }
+
+  Widget _construireExplorer() {
+    return FutureBuilder<List<Destination>>(
+      future: _futurDestinations,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return ErreurReseau(
+            message: 'Impossible de charger les destinations.',
+            onReessayer: _recharger,
+          );
+        }
+
+        final destinations = snapshot.data!;
+        return RefreshIndicator(
+          onRefresh: _recharger,
+          child: _construireAccueil(destinations),
+        );
+      },
+    );
+  }
+
+  Widget _construireAccueil(List<Destination> destinations) {
+    final filtrees = _filtrer(destinations);
+
     return ListView(
+      physics: const AlwaysScrollableScrollPhysics(), 
       padding: const EdgeInsets.all(20),
       children: [
         const HomeHeader(prenom: 'Moez'),
         const SizedBox(height: 20),
         const SearchBox(),
         const SizedBox(height: 20),
-        HeroBanner(destination: destinations.first),
+        
+        if (destinations.isNotEmpty)
+          HeroBanner(destination: destinations.first),
+          
         const SizedBox(height: 24),
         const SectionTitle(title: 'Catégories'),
         const SizedBox(height: 12),
@@ -64,9 +114,9 @@ class _HomeScreenState extends State<HomeScreen> {
         const SectionTitle(title: 'Populaires', action: 'Voir tout'),
         const SizedBox(height: 12),
 
-        for (final d in _filtrees)
+        for (final d in filtrees)
           DestinationCard(
-            key: ValueKey(d.nom),
+            key: ValueKey(d.id),
             destination: d,
           ),
       ],
@@ -78,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: SafeArea(
         child: _onglet == 0
-            ? _construireAccueil()
+            ? _construireExplorer() 
             : const Center(
                 child: Text('Bientôt disponible'),
               ),
@@ -108,6 +158,58 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Profil',
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ErreurReseau extends StatelessWidget {
+  final String message;
+  final VoidCallback onReessayer;
+
+  const ErreurReseau({
+    super.key,
+    required this.message,
+    required this.onReessayer,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.cloud_off,
+              size: 64,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              message,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Vérifiez que json-server est lancé.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[600],
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            FilledButton.tonalIcon(
+              onPressed: onReessayer,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Réessayer'),
+            ),
+          ],
+        ),
       ),
     );
   }

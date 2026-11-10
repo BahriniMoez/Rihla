@@ -104,3 +104,16 @@ Q2: Le serveur a choisi l'id de la réservation qui & généré et attribué l'I
 
 Q3: Une requete Get récuprére les données, alors l'URL et les parametres de requete suffisent à récupérer les données, Contrairement, un POST sert à envoyer des nouvelles données à enregistrer, alors le corps de la requete transporte donc ses données.
 
+Palier2 :
+Q1: Un constructeur factory permet de créer un nouvel objet tout en effectuant des vérifications ou en utilisant des données existantes.Contrairement à une méthode statique classique, il s'appelle directement avec Destination.fromJson(...), ce qui facilite la création des objets.
+
+Q2: Si db.json contient "prix": "420", le prix est considéré comme une chaine de caractères (String) et non comme un entier (int).Donc l'expression "json['prix'] as int" provoquera une erreur de type (TypeError)
+
+Q3: Parce que la méthode utilise une opération asynchrone. Le résultat n'est pas disponible immédiatement, Le programme ne peut pas bloquer en attendant la réponse, il renvoie donc une promesse (Future) qui se résoudra par la liste des destinations une fois la réponse du serveur reçue et traitée.
+
+Palier3:
+Q1: On déclare _futurDestinations avec late parce que _futurDestinations sera initialisée plus tard, généralement dans la méthode initState(), avant son utilisation
+
+Q2: Sans le test snapshot.hasError quand le serveur est aarrété, l'utilisateur verrait une erreur à l'écran au lieu d'un message clair indiquant que le chargement a échoué.
+
+Q3: Non. La liste complète des destinations a déjà été récupérée depuis le serveur et stockée en mémoire via snapshot.data. le changement de catégorie,reconstruit la vue  et filtre les données existantes sur la liste sans contacter le serveur.
