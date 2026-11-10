@@ -117,3 +117,10 @@ Q1: On déclare _futurDestinations avec late parce que _futurDestinations sera i
 Q2: Sans le test snapshot.hasError quand le serveur est aarrété, l'utilisateur verrait une erreur à l'écran au lieu d'un message clair indiquant que le chargement a échoué.
 
 Q3: Non. La liste complète des destinations a déjà été récupérée depuis le serveur et stockée en mémoire via snapshot.data. le changement de catégorie,reconstruit la vue  et filtre les données existantes sur la liste sans contacter le serveur.
+
+Palier4:
+Q1: les relations entre les données se font par identifiant(id),alors l'envoie de l'ID permet d'éviter de renvoyer des données en double, puisque le serveur peut facilement lier la réservation grace à cet identifiant unique.
+
+Q2: Le serveur ne comprendra pas le format des données envoyées et rejettera la requête, car cet en-tête lui indique explicitement qu'on lui transmet du JSON.
+
+Q3: on test mounted apres await de creerReservation pour s'assurer que l'écran, existe toujours, au cas où l'utilisateur aurait quitté la page pendant que la requête réseau s'exécutait, ce qui évite une erreur critique d'exécution.
