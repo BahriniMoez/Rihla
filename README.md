@@ -94,3 +94,13 @@ Q1 : reservation vaut null, car aucun objet n'a été passé en paramètre à Na
 Q2: VS Code affiche un avertissement de type « Use of 'BuildContext' across asynchronous gaps ». Cela signifie qu'utiliser le context après un délai asynchrone (await) sans vérifier si le widget est toujours monté (mounted) peut provoquer des bugs ou des crashes si l'utilisateur a quitté l'écran entre-temps.
 
 Q3 : nous apprend qu'une boîte de dialogue (AlertDialog) est gérée par Flutter comme un écran superposé géré à l'intérieur de la pile de navigation. Elle s'ouvre via un système de route et se ferme en la dépilant avec Navigator.pop.
+
+
+TP5 Question de Comprehension :
+Palier0:
+Q1: La /destinations/99 renvoie le code 404 Not Found. Il appartient à la famille des erreurs client
+
+Q2: Le serveur a choisi l'id de la réservation qui & généré et attribué l'ID automatiquement lors de l'enregistrement de la ressource.
+
+Q3: Une requete Get récuprére les données, alors l'URL et les parametres de requete suffisent à récupérer les données, Contrairement, un POST sert à envoyer des nouvelles données à enregistrer, alors le corps de la requete transporte donc ses données.
+
