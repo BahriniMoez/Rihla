@@ -124,3 +124,21 @@ Q1: les relations entre les données se font par identifiant(id),alors l'envoie 
 Q2: Le serveur ne comprendra pas le format des données envoyées et rejettera la requête, car cet en-tête lui indique explicitement qu'on lui transmet du JSON.
 
 Q3: on test mounted apres await de creerReservation pour s'assurer que l'écran, existe toujours, au cas où l'utilisateur aurait quitté la page pendant que la requête réseau s'exécutait, ce qui évite une erreur critique d'exécution.
+
+
+
+TP6 Question de comprehension:
+
+Palier 1:
+Q1:
+Si vous cassez l'application sur la branche feature/favoris, la branche main ne sera pas affectée.chaque branche permet de travailler indépendamment sur une version du projet.
+
+Palier 2:
+Q1:
+l'affichage de bouton change mais le widget en lui-meme ne gère plus d'état interne. Il délète toute la gestion de l'état au modèle partagé via la méthode context.watch<FavorisModel>(). Dès que l'état global change, Flutter demande la reconstruction du widget et met à jour son affichage graphiquement sans qu'il ait besoin d'être un StatefulWidget.
+
+Q2:
+Lorsque l'application recharge ou actualise les données depuis l'API (json-server), de nouvelles instances d'objets Destination sont créées en mémoire avec de nouveaux emplacements mémoire. Si on utilisait un Set<Destination> sans redéfinir strictement les opérateurs == et hashCode, Dart considérerait que la nouvelle instance est différente de l'ancienne, ce qui fausserait la vérification. Utiliser une Map<String, Destination> indexée par l'identifiant unique (d.id) garantit une recherche et une identification fiables, indépendantes des instances d'objets recréées.
+
+Q3:
+le modèle FavorisModel et sa structure de données resident uniquement dans la mémoire RAM de l'application prendant son exécution. Un Hot restard réinitialise complètement l'emulateur ce qui efface toutes les données en mémoire.
