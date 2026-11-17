@@ -142,3 +142,9 @@ Lorsque l'application recharge ou actualise les données depuis l'API (json-serv
 
 Q3:
 le modèle FavorisModel et sa structure de données resident uniquement dans la mémoire RAM de l'application prendant son exécution. Un Hot restard réinitialise complètement l'emulateur ce qui efface toutes les données en mémoire.
+
+Palier 4:
+Q1:
+Tout s'est bien passé car nous avons travaillé sur des fichiers et des blocs de code spécifiques qui n'avaient pas été modifiés en parallèle sur la branche main. Résultat : Git n'a pas eu de choix à faire et a pu fusionner l'ensemble automatiquement et proprement sans notre aide.
+Q2:
+ces marqueurs sont juste des repères textuels ajoutés par Git et ne font pas du tout partie de la syntaxe du langage Dart. Si l'un d'eux reste dans le code, le compilateur ne le reconnaîtra pas, ce qui plantera immédiatement et empêchera Flutter de lancer l'application.
