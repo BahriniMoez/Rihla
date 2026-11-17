@@ -8,6 +8,7 @@ import '../widgets/hero_banner.dart';
 import '../widgets/home_header.dart';
 import '../widgets/search_box.dart';
 import '../widgets/section_title.dart';
+import 'mes_reservations_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -123,15 +124,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _selectionnerEcran(int index) {
+      switch (index) {
+        case 0:
+          return _construireExplorer();
+        case 1:
+          return const Center(child: Text('Favoris'));
+        case 2:
+          return const MesReservationsScreen();
+        case 3:
+          return const Center(child: Text('Profil'));
+        default:
+          return _construireExplorer();
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: _onglet == 0
-            ? _construireExplorer() 
-            : const Center(
-                child: Text('Bientôt disponible'),
-              ),
+        child: _selectionnerEcran(_onglet),    
       ),
 
       bottomNavigationBar: NavigationBar(
@@ -151,6 +163,11 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.favorite_border),
             selectedIcon: Icon(Icons.favorite),
             label: 'Favoris',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.luggage_outlined),
+            selectedIcon: Icon(Icons.luggage),
+            label: 'Voyages',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
