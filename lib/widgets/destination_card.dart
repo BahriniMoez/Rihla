@@ -99,7 +99,7 @@ class DestinationCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      const FavoriteButton(),
+                      FavoriteButton(destination: destination),
                     ],
                   ),
                 ],

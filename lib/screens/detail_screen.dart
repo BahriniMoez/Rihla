@@ -110,12 +110,12 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                 ),
-                const Positioned(
+                Positioned(
                   top: 48,
                   right: 20,
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: FavoriteButton(),
+                    child: FavoriteButton(destination: destination),
                   ),
                 ),
               ],
