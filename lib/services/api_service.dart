@@ -43,6 +43,16 @@ class ApiService {
   return creee['id'].toString();   
   }
 
+  static Future<void> supprimerReservation(String id) async {
+    final reponse = await http
+        .delete(_url('/reservations/$id'))
+        .timeout(ApiConfig.timeout);
+
+    if (reponse.statusCode != 200) {
+      throw Exception('Erreur lors de la suppression (Code : ${reponse.statusCode})');
+    }
+  }
+
   static Future<List<Reservation>> getReservations() async {
   final reponse = await http
       .get(_url('/reservations?_embed=destination'))

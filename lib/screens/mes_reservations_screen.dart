@@ -12,6 +12,8 @@ class MesReservationsScreen extends StatefulWidget {
 
 class _MesReservationsScreenState extends State<MesReservationsScreen> {
   late Future<List<Reservation>> _futurReservations;
+  List<Reservation> _reservations = [];
+  bool _estInitialise = false;
 
   @override
   void initState() {
@@ -23,6 +25,7 @@ class _MesReservationsScreenState extends State<MesReservationsScreen> {
     final futur = ApiService.getReservations();
     setState(() {
       _futurReservations = futur;
+      _estInitialise = false;
     });
     try {
       await futur;
@@ -34,6 +37,34 @@ class _MesReservationsScreenState extends State<MesReservationsScreen> {
     final mois = date.month.toString().padLeft(2, '0');
     return '$jour/$mois/${date.year}';
   }
+
+  Future<void> _annulerReservation(int index, Reservation reservation) async {
+    setState(() {
+      _reservations.removeAt(index);
+    });
+
+    try {
+      if (reservation.id != null) {
+        await ApiService.supprimerReservation(reservation.id!);
+      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Réservation annulée.')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _reservations.insert(index, reservation);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Impossible d\'annuler : erreur serveur.'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +88,12 @@ class _MesReservationsScreenState extends State<MesReservationsScreen> {
             );
           }
 
-          final reservations = snapshot.data!;
+          if (!_estInitialise && snapshot.hasData) {
+            _reservations = List.from(snapshot.data!);
+            _estInitialise = true;
+          }
 
-          if (reservations.isEmpty) {
+          if (_reservations.isEmpty) {
             return RefreshIndicator(
               onRefresh: _recharger,
               child: ListView(
@@ -82,9 +116,9 @@ class _MesReservationsScreenState extends State<MesReservationsScreen> {
             child: ListView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.all(16),
-              itemCount: reservations.length,
+              itemCount: _reservations.length,
               itemBuilder: (context, index) {
-                final r = reservations[index];
+                final r = _reservations[index];
                 return Card(
                   margin: const EdgeInsets.only(bottom: 16),
                   clipBehavior: Clip.antiAlias,
@@ -135,6 +169,11 @@ class _MesReservationsScreenState extends State<MesReservationsScreen> {
                               ),
                             ],
                           ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
+                          onPressed: () => _annulerReservation(index, r),
+                          tooltip: 'Annuler la réservation',
                         ),
                       ],
                     ),
