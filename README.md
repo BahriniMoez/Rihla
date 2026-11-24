@@ -148,3 +148,14 @@ Q1:
 Tout s'est bien passé car nous avons travaillé sur des fichiers et des blocs de code spécifiques qui n'avaient pas été modifiés en parallèle sur la branche main. Résultat : Git n'a pas eu de choix à faire et a pu fusionner l'ensemble automatiquement et proprement sans notre aide.
 Q2:
 ces marqueurs sont juste des repères textuels ajoutés par Git et ne font pas du tout partie de la syntaxe du langage Dart. Si l'un d'eux reste dans le code, le compilateur ne le reconnaîtra pas, ce qui plantera immédiatement et empêchera Flutter de lancer l'application.
+
+TP7 Question de comprehension:
+partie1:
+Q1 : On stocke des String JSON plutôt que directement des objets Destination parce que les données enregistrées dans une base de données locale (comme SharedPreferences) doivent être sous un format simple que l'application peut sauvegarder et récupérer facilement.
+
+Q2: FavorisModel()..charger() permet de crée une nouvelle instance de la classe FavorisModel et retourne l'instance FavorisModel elle_meme.
+
+Q3: FavorisModel() crée une nouvelle instance , .charger() appelle la methode charger() sur cette instance, alors cette expresssion retourne la valeur retourne la valeur retournée par la methode charger(), et non l'objet FavorisModel.
+
+Q4: il serra un bug discret si on oublie notifyListener() parce que les données seraient correctement chargées, mais l'interface flutter ne serait pas mise à jour
+ 
