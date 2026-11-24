@@ -159,3 +159,4 @@ Q3: FavorisModel() crée une nouvelle instance , .charger() appelle la methode c
 
 Q4: il serra un bug discret si on oublie notifyListener() parce que les données seraient correctement chargées, mais l'interface flutter ne serait pas mise à jour
  
+Suggestion de copilot/palier2 : pour le Bouton de bascule du thème clair/sombre dans home_header,le Copilot suggére l'utilisation des icônes Icons.wb_sunny et Icons.nightlight_round->Modifiée en Icons.light_mode et Icons.dark_mode 
