@@ -148,3 +148,23 @@ Q1:
 Tout s'est bien passé car nous avons travaillé sur des fichiers et des blocs de code spécifiques qui n'avaient pas été modifiés en parallèle sur la branche main. Résultat : Git n'a pas eu de choix à faire et a pu fusionner l'ensemble automatiquement et proprement sans notre aide.
 Q2:
 ces marqueurs sont juste des repères textuels ajoutés par Git et ne font pas du tout partie de la syntaxe du langage Dart. Si l'un d'eux reste dans le code, le compilateur ne le reconnaîtra pas, ce qui plantera immédiatement et empêchera Flutter de lancer l'application.
+
+TP7 Question de comprehension:
+partie1:
+Q1 : On stocke des String JSON plutôt que directement des objets Destination parce que les données enregistrées dans une base de données locale (comme SharedPreferences) doivent être sous un format simple que l'application peut sauvegarder et récupérer facilement.
+
+Q2: FavorisModel()..charger() permet de crée une nouvelle instance de la classe FavorisModel et retourne l'instance FavorisModel elle_meme.
+
+Q3: FavorisModel() crée une nouvelle instance , .charger() appelle la methode charger() sur cette instance, alors cette expresssion retourne la valeur retourne la valeur retournée par la methode charger(), et non l'objet FavorisModel.
+
+Q4: il serra un bug discret si on oublie notifyListener() parce que les données seraient correctement chargées, mais l'interface flutter ne serait pas mise à jour
+ 
+Suggestion de copilot/palier2 : pour le Bouton de bascule du thème clair/sombre dans home_header,le Copilot suggére l'utilisation des icônes Icons.wb_sunny et Icons.nightlight_round->Modifiée en Icons.light_mode et Icons.dark_mode 
+
+palier3:
+Q1 : On mémorise le cache uniquement après avoir vérifié statusCode == 200 afin de ne jamais enregistrer dans SharedPreferences un contenu d'erreur qui ne correspond pas à une vraie liste de destinations valides.
+
+Q2 : Il voit l'écran d'erreur ErreurReseau. 
+car comme c'est la première ouverture sans serveur, http.get échoue et entre dans le catch. En lisant SharedPreferences sous _cleCache, cache est null aucune donnée n'a encore été enregistrée, donc getDestinations() exécute rethrow. L'erreur remonte alors jusqu'au FutureBuilder de HomeScreen, qui passe dans if (snapshot.hasError) et affiche ErreurReseau.
+
+Q3 : rethrow relance l'exception capturée afin de laisser un niveau supérieur la traiter.

@@ -36,4 +36,18 @@ class Destination {
       prix: json['prix'] as int,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nom': nom,
+      'region': region,
+      'categorie': categorie,
+      'image': image,
+      'duree': duree,
+      'description': description,
+      'note': note,
+      'prix': prix,
+    };
+  }
 }

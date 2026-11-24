@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
- 
+ import 'package:provider/provider.dart';
+import '../providers/reglages_model.dart';
 class HomeHeader extends StatelessWidget {
   final String prenom;
  
@@ -9,6 +10,7 @@ class HomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme; 
+    final estSombre = context.watch<ReglagesModel>().sombre;
  
     return Row(
       children: [
@@ -29,6 +31,15 @@ class HomeHeader extends StatelessWidget {
             ],
           ),
         ),
+        IconButton(
+          tooltip: estSombre ? 'Passer en thème clair' : 'Passer en thème sombre',
+          onPressed: () => context.read<ReglagesModel>().basculerTheme(),
+          icon: Icon(
+            estSombre ? Icons.light_mode : Icons.dark_mode,
+            color: cs.primary,
+          ),
+        ),
+        const SizedBox(width: 8),
         // TODO 3 : CircleAvatar de rayon 26, fond cs.primaryContainer,
         CircleAvatar(
           radius: 26,
