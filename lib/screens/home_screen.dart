@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data/destinations.dart'; 
+import '../data/destinations.dart';
 import '../models/destination.dart';
 import '../providers/favoris_model.dart';
-import '../services/api_service.dart'; 
+import '../services/api_service.dart';
 import '../widgets/destination_card.dart';
 import '../widgets/hero_banner.dart';
 import '../widgets/home_header.dart';
 import '../widgets/search_box.dart';
 import '../widgets/section_title.dart';
-import 'mes_reservations_screen.dart';
 import 'favoris_screen.dart';
+import 'mes_reservations_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -21,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _categorie = 'Tout';
-  int _onglet = 0; 
+  int _onglet = 0;
   late Future<List<Destination>> _futurDestinations;
 
   @override
@@ -65,9 +66,22 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         final destinations = snapshot.data!;
-        return RefreshIndicator(
-          onRefresh: _recharger,
-          child: _construireAccueil(destinations),
+        return Column(
+          children: [
+            if (ApiService.depuisCache)
+              Container(
+                width: double.infinity,
+                color: Colors.amber.shade100,
+                padding: const EdgeInsets.all(8),
+                child: const Text('Hors connexion : données enregistrées'),
+              ),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: _recharger,
+                child: _construireAccueil(destinations),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -77,21 +91,17 @@ class _HomeScreenState extends State<HomeScreen> {
     final filtrees = _filtrer(destinations);
 
     return ListView(
-      physics: const AlwaysScrollableScrollPhysics(), 
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.all(20),
       children: [
         const HomeHeader(prenom: 'Moez'),
         const SizedBox(height: 20),
         const SearchBox(),
         const SizedBox(height: 20),
-        
-        if (destinations.isNotEmpty)
-          HeroBanner(destination: destinations.first),
-          
+        if (destinations.isNotEmpty) HeroBanner(destination: destinations.first),
         const SizedBox(height: 24),
         const SectionTitle(title: 'Catégories'),
         const SizedBox(height: 12),
-
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -112,11 +122,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-
         const SizedBox(height: 16),
         const SectionTitle(title: 'Populaires', action: 'Voir tout'),
         const SizedBox(height: 12),
-
         for (final d in filtrees)
           DestinationCard(
             key: ValueKey(d.id),
@@ -127,18 +135,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _selectionnerEcran(int index) {
-      switch (index) {
-        case 0:
-          return _construireExplorer();
-        case 1:
-          return const FavorisScreen();
-        case 2:
-          return const MesReservationsScreen();
-        case 3:
-          return const Center(child: Text('Profil'));
-        default:
-          return _construireExplorer();
-      }
+    switch (index) {
+      case 0:
+        return _construireExplorer();
+      case 1:
+        return const FavorisScreen();
+      case 2:
+        return const MesReservationsScreen();
+      case 3:
+        return const Center(child: Text('Profil'));
+      default:
+        return _construireExplorer();
+    }
   }
 
   @override
@@ -147,9 +155,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: _selectionnerEcran(_onglet),    
+        child: _selectionnerEcran(_onglet),
       ),
-
       bottomNavigationBar: NavigationBar(
         selectedIndex: _onglet,
         onDestinationSelected: (int index) {
